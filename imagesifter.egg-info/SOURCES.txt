@@ -1,0 +1,11 @@
+MANIFEST.in
+README.rst
+imagesifter/__init__.py
+imagesifter/exceptions.py
+imagesifter/mains.py
+imagesifter/test.py
+imagesifter/utils.py
+imagesifter.egg-info/PKG-INFO
+imagesifter.egg-info/SOURCES.txt
+imagesifter.egg-info/dependency_links.txt
+imagesifter.egg-info/top_level.txt
