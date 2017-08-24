@@ -1,5 +1,7 @@
+LICENSE.txt
 MANIFEST.in
 README.rst
+setup.py
 imagesifter/__init__.py
 imagesifter/exceptions.py
 imagesifter/mains.py
