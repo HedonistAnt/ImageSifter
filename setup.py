@@ -7,11 +7,11 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 setup(
     name='imagesifter',
-    version='1.0.3',
+    version='1.0.6',
     description='Easy-to-use package for downloading originals of images from web sites ',
-
+    long_description=long_description,
     packages=find_packages(),
-    author='Maria_Mamaeva',
+    author='Hedonist_Ant',
     author_email='redkandibober666@gmail.com',
     url='https://github.com/HedonistAnt/ImageSifter',
     license='MIT',
@@ -26,7 +26,7 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
-    keywords='download image from web sites',
+    keywords='download image web sites',
 
     python_requires='>=2.7'
 )
