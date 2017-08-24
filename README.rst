@@ -12,7 +12,7 @@ pip install (recomended) :
 
 .. code:: sh
 
-    $ pip install ImageScraper
+    $ pip install imagesifter
 
 Git clone:
 ~~~~~~~~~~~~~~~~
