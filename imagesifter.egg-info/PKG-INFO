@@ -48,16 +48,18 @@ Description: ImageSifter
         *Note:*
         *New folder will be created in current directory. Default folder name is "images". The maximum file size (size_limit) is in bytes.*
         
+        Errors and solutions
+        ####################
+        
+        If you have lxml error: 'DLL load failed' on Windows, just install unoffical build from http://www.lfd.uci.edu/~gohlke/pythonlibs/
         
 Keywords: download image web sites
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
 Classifier: Intended Audience :: Developers
 Classifier: License :: OSI Approved :: MIT License
-Classifier: Programming Language :: Python :: 2.7
-Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.3
 Classifier: Programming Language :: Python :: 3.4
 Classifier: Programming Language :: Python :: 3.5
 Classifier: Programming Language :: Python :: 3.6
-Requires-Python: >=2.7
+Requires-Python: >=3

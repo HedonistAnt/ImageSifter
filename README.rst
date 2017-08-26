@@ -40,3 +40,7 @@ Usage
 *Note:*
 *New folder will be created in current directory. Default folder name is "images". The maximum file size (size_limit) is in bytes.*
 
+Errors and solutions
+####################
+
+If you have lxml error: 'DLL load failed' on Windows, just install unoffical build from http://www.lfd.uci.edu/~gohlke/pythonlibs/
