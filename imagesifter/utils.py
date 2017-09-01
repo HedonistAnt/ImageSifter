@@ -11,7 +11,7 @@ import os
 import re
 from image_scraper.exceptions import *
 from urllib.request import urlopen
-
+from . import exceptions
 
 class ImageSifter(object):
     url = None
@@ -61,12 +61,12 @@ class ImageSifter(object):
             try:
 
                 if page.status_code != 200:
-                    raise PageLoadError(page.status_code)
+                    raise exceptions.PageLoadError(page.status_code)
             except requests.exceptions.MissingSchema:
                 self.url = "http://" + self.url
                 page = requests.get(self.url, proxies=self.proxies)
                 if page.status_code != 200:
-                    raise PageLoadError(page.status_code)
+                    raise exceptions.PageLoadError(page.status_code)
             finally:
                 page_html = page.text
                 page_url = page.url
@@ -87,11 +87,10 @@ class ImageSifter(object):
 
         htmlstr = self.page_html.split(' ')
 
-
-
         srcext = list(map(lambda ext: list(
-            filter(lambda x: x != None, list(map(lambda s: re.search(r'http[s]*://.*[\.]' + re.escape(ext), str(s)), htmlstr)))),
-                     self.format_list))[0]  # searching for links ending in .<ext> (extensions from format_list)
+            filter(lambda x: x != None,
+                   list(map(lambda s: re.search(r'http[s]*://.*[\.]' + re.escape(ext), str(s)), htmlstr)))),
+                          self.format_list))[0]  # searching for links ending in .<ext> (extensions from format_list)
         srcext = list(map(lambda x: x.group(0), srcext))  # getting string result
 
         img_list = self.process_links(imghtml) + self.process_links(imgjs) + self.process_links(srcext)
@@ -108,11 +107,11 @@ class ImageSifter(object):
     def process_download_path(self):
         if os.path.exists(self.download_path):
             if not os.access(self.download_path, os.W_OK):
-                raise DirectoryAccessError
+                raise exceptions.DirectoryAccessError
         elif os.access(os.path.dirname(self.download_path), os.W_OK):
             os.makedirs(self.download_path)
         else:
-            raise DirectoryCreateError
+            raise exceptions.DirectoryCreateError
         return True
 
     def download_image(self):
@@ -131,11 +130,9 @@ class ImageSifter(object):
             size = urlopen(url).info().get_all('Content-Length')[0]
 
             if extension not in self.format_list:
-
                 continue
 
             if self.size_limit != None and int(self.size_limit) < int(size):
-
                 continue
 
             name = url.split('/')[-1] + '.' + extension
@@ -151,24 +148,3 @@ class ImageSifter(object):
     def process_links(self, links):
         x = list(map(lambda u: urljoin('http://', u), links))
         return x
-
-
-def download_worker_fn(scraper, img_url, pbar, status_flags, status_lock):
-    failed = False
-    size_failed = False
-    try:
-        scraper.download_image(img_url)
-    except ImageDownloadError:
-        failed = True
-    except ImageSizeError:
-        size_failed = True
-    status_lock.acquire(True)
-    if failed:
-        status_flags['failed'] += 1
-    elif size_failed:
-        status_flags['over_max_filesize'] += 1
-    status_flags['percent'] = status_flags[
-                                  'percent'] + old_div(100.0, scraper.no_to_download)
-    pbar.update(status_flags['percent'] % 100)
-    status_lock.release()
-    return True
