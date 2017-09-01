@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from future.standard_library import install_aliases
-
+from . import exceptions
 install_aliases()
 from lxml import html
 import requests
@@ -146,22 +146,3 @@ class ImageSifter(object):
         return x
 
 
-def download_worker_fn(scraper, img_url, pbar, status_flags, status_lock):
-    failed = False
-    size_failed = False
-    try:
-        scraper.download_image(img_url)
-    except ImageDownloadError:
-        failed = True
-    except ImageSizeError:
-        size_failed = True
-    status_lock.acquire(True)
-    if failed:
-        status_flags['failed'] += 1
-    elif size_failed:
-        status_flags['over_max_filesize'] += 1
-    status_flags['percent'] = status_flags[
-                                  'percent'] + old_div(100.0, scraper.no_to_download)
-    pbar.update(status_flags['percent'] % 100)
-    status_lock.release()
-    return True
